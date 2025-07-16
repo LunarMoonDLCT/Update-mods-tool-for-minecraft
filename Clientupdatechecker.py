@@ -139,7 +139,7 @@ for filename in os.listdir(MODS_FOLDER):
     else:
         print(f"❌ Không có phiên bản tương thích trên CurseForge.")
         
-#---Complate-----------------#
+#---Complete-----------------#
 
 
 print("\n🎉 HOÀN TẤT rồi tận hưởng đi.")
