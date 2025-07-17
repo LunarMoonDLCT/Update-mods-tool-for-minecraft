@@ -1,26 +1,31 @@
-# Update-mods-for-minecraft
-This app use for minecraft to update all mod when user run this app, can edit a config to download mod to version and Loader Minecraft
+# 🧰 Minecraft Mod Updater GUI (by LunarMoonDLCT)
 
-App in work
+A simple tool that updates your Minecraft mods via Modrinth and CurseForge.  
+✅ Easy-to-use interface  
+✅ Supports multiple loaders: `fabric`, `forge`, `quilt`, `neoforge`  
 
-im creating the interface for the app
+## 💡 Features
 
-#How to use:
+- Automatically updates mods by searching Modrinth first, then CurseForge if needed
+- Saves updated mods into a separate folder (`updated_mods_yyyyMMdd_HHmmss`)
+- Clean and user-friendly GUI built with `tkinter`
+- Exit confirmation prompt to avoid accidental closing
+- Log display during the update process
 
-Move this file Updatemods.py to your minecraft folder
-Default minecraft folder in Windows: "C:\Users\<your user>\AppData\Roaming\.minecraft
-Default minecraft folder in Linux: "/home/.minecraft"
+## 📦 Requirements (for running via Python)
 
-You can edit minecraft modloader and version by editing the code.
-After you put the file in your minecraft folder, open Command prompt(windows) or terminal(Linux)
+- Python 3.8+
+- Required packages:
+  ```bash
+  pip install requests toml
 
-and type this commands:
+## 📦 How to build (for build to application file)
+1. Install pyinstaller
+  ```bash
+  pip install pyinstaller
+  ```
+2. build code to app
+   ```bash
+   pyinstaller --noconfirm --onefile --windowed update_mod_gui.py
 
 
-#Command1:
-
-"pip install requests"
-
-#Command2:
-
-"python .\updatemod.py"
