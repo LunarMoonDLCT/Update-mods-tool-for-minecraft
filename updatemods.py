@@ -7,8 +7,8 @@ import re
 #----------------------------#
 
 #-----Config here------------#
-MINECRAFT_VERSION = "1.21.7"  #enter your version of minecraft
-MODLOADER = "fabric"  #Enter your modloader minecraft
+MINECRAFT_VERSION = "1.21.7"
+MODLOADER = "fabric"
 MODS_FOLDER = "./mods.old"
 OUTPUT_FOLDER = "./updated_mods"
 #----------------------------#
@@ -27,14 +27,35 @@ def sanitize_filename(name):
 def get_mod_info_from_jar(jar_path):
     try:
         with zipfile.ZipFile(jar_path, 'r') as jar:
+            # Fabric
             if 'fabric.mod.json' in jar.namelist():
                 with jar.open('fabric.mod.json') as f:
                     mod_json = json.load(f)
                     return mod_json.get("name") or mod_json.get("id")
-                    
+
+            # Quilt
+            if 'quilt.mod.json' in jar.namelist():
+                with jar.open('quilt.mod.json') as f:
+                    mod_json = json.load(f)
+                    q = mod_json.get("quilt_loader", {})
+                    return q.get("name") or q.get("id")
+
+            # Forge
+            if 'META-INF/mods.toml' in jar.namelist():
+                try:
+                    import toml
+                except ImportError:
+                    print("⚠️ Thiếu thư viện 'toml'. Cài bằng: pip install toml")
+                    return None
+                with jar.open('META-INF/mods.toml') as f:
+                    data = toml.loads(f.read().decode('utf-8'))
+                    mods = data.get("mods", [])
+                    if mods and isinstance(mods, list):
+                        return mods[0].get("modId")
     except Exception as e:
-        print(f"❌ Không thể đọc đc file {jar_path}: {e}")
-    return 
+        print(f"❌ Lỗi khi đọc mod jar: {e}")
+    return None
+
 #----------------------------#
 
 #---Search mod in wed--------#
@@ -139,7 +160,7 @@ for filename in os.listdir(MODS_FOLDER):
     else:
         print(f"❌ Không có phiên bản tương thích trên CurseForge.")
         
-#---Complete-----------------#
+#---Complate-----------------#
 
 
 print("\n🎉 HOÀN TẤT rồi tận hưởng đi.")
