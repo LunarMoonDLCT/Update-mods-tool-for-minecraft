@@ -7,8 +7,8 @@ import re
 #----------------------------#
 
 #-----Config here------------#
-MINECRAFT_VERSION = "1.21.7"
-MODLOADER = "fabric"
+MINECRAFT_VERSION = "1.21.7"  #enter your version of minecraft
+MODLOADER = "fabric"  #Enter your modloader minecraft
 MODS_FOLDER = "./mods.old"
 OUTPUT_FOLDER = "./updated_mods"
 #----------------------------#
