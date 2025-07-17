@@ -20,7 +20,7 @@ VSVersionInfo(
             StringStruct('FileDescription', 'Minecraft Mod Auto Updater'),
             StringStruct('FileVersion', '1.0'),
             StringStruct('InternalName', 'mod_updater_gui'),
-            StringStruct('LegalCopyright', 'Copyright © 2025 LunarMoonDLCT'),
+            StringStruct('LegalCopyright', 'Copyright © 2025'),
             StringStruct('OriginalFilename', 'mod_updater_gui.exe'),
             StringStruct('ProductName', 'Mod Updater Tool'),
             StringStruct('ProductVersion', '1.0')
