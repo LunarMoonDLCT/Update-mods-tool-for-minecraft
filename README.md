@@ -1,4 +1,4 @@
-# 🧰 Minecraft Mod Updater GUI (by LunarMoonDLCT)
+# 🧰 Minecraft Mod Updater
 
 A simple tool that updates your Minecraft mods via Modrinth and CurseForge.  
 ✅ Easy-to-use interface  
