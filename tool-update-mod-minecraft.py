@@ -52,7 +52,7 @@ def extract_mod_info(jar_path):
     return None
 
 #--------------------------------------#
-# Modrinth API
+# Modrinth
 #--------------------------------------#
 def search_modrinth(mod_id):
     url = f"https://api.modrinth.com/v2/search?query={mod_id}&limit=1"
@@ -76,7 +76,7 @@ def get_latest_modrinth(project_id, mc_version, modloader):
 
 
 #--------------------------------------#
-# CurseForge API
+# CurseForge
 #--------------------------------------#
 def search_curseforge(mod_name):
     url = f"https://api.curseforge.com/v1/mods/search?gameId=432&searchFilter={mod_name}&pageSize=1"
