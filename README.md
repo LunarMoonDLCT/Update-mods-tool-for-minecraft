@@ -9,8 +9,6 @@ A simple tool that updates your Minecraft mods via Modrinth and CurseForge.
 - Automatically updates mods by searching Modrinth first, then CurseForge if needed
 - Saves updated mods into a separate folder (`updated_mods_yyyyMMdd_HHmmss`)
 - Clean and user-friendly GUI built with `tkinter`
-- Exit confirmation prompt to avoid accidental closing
-- Log display during the update process
 
 ## 📦 Requirements (for running via Python)
 
