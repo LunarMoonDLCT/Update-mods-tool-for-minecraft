@@ -38,8 +38,7 @@ def start_update():
         messagebox.showerror("Error", "Please enter valid Minecraft version and loader.")
         return
 
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    output_dir = os.path.abspath(f"updated_mods_{timestamp}")
+    output_dir = os.path.abspath(f"{mods_folder}")
     latest_output_folder[0] = output_dir
     os.makedirs(output_dir, exist_ok=True)
     log_box.delete(1.0, tkinter.END)

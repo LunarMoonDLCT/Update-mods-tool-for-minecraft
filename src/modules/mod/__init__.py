@@ -115,11 +115,19 @@ class ModUpdater:
                             f.write(response.content)
                         log.insert(tk.END, f"[✓] Downloaded from Modrinth: {filename}\n")
                         print(f"[✓] Downloaded from Modrinth: {filename}")
+                        if os.path.exists(filepath):
+                            os.remove(filepath)
+                            log.insert(tk.END, f"[✓] Removed old mod: {filepath}\n")
+                            print(f"[*] Removed: {filepath}")
                         return
+                    else:
+                        log.insert(tk.END, f"[!] Failed to download from Modrinth: {filename}\n")
+                        print(f"[!] Failed to download from Modrinth: {filename}")
                 except Exception as e:
                     print(f"Error downloading from Modrinth: {e}")
-            log.insert(tk.END, "[!] No compatible version on Modrinth\n")
-            print("[!] No compatible version on Modrinth")
+        else:
+            log.insert(tk.END, "[!] Mod not found on Modrinth\n")
+            print("[!] Mod not found on Modrinth")
 
         log.insert(tk.END, "[!] Trying CurseForge...\n")
         print("[!] Trying CurseForge...")
@@ -136,8 +144,19 @@ class ModUpdater:
                             f.write(response.content)
                         log.insert(tk.END, f"[✓] Downloaded from CurseForge: {filename}\n")
                         print(f"[✓] Downloaded from CurseForge: {filename}")
+                        if os.path.exists(filepath):
+                            os.remove(filepath)
+                            log.insert(tk.END, f"[✓] Removed old mod: {filepath}\n")
+                            print(f"[*] Removed: {filepath}")
                         return
+                    else:
+                        log.insert(tk.END, f"[!] Failed to download from CurseForge: {filename}\n")
+                        print(f"[!] Failed to download from CurseForge: {filename}")
                 except Exception as e:
                     print(f"Error downloading from CurseForge: {e}")
+        else:
+            log.insert(tk.END, "[!] Mod not found on CurseForge\n")
+            print("[!] Mod not found on CurseForge")
+
         log.insert(tk.END, f"[!] Could not update: {mod_id}\n")
         print(f"[!] Could not update: {mod_id}")
