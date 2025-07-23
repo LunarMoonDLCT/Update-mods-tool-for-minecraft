@@ -12,10 +12,10 @@ except ImportError:
     toml = None
 
 CURSEFORGE_API_KEY = "Dont-enter-API-KEY"
-latest_output_folder = [""]
 
 class ModUpdater:
     def __init__(self):
+        self.latest_output_folder = [""]
         pass
 
     #--------------------------------------#
