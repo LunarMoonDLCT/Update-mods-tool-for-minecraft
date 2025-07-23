@@ -15,7 +15,7 @@ A simple tool that updates your Minecraft mods via Modrinth and CurseForge.
 - Python 3.8+
 - Required packages:
   ```bash
-  pip install requests toml
+  pip install -r requirements.txt
 
 ## 📦 How to build (for build to application file)
 1. Install pyinstaller
