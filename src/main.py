@@ -52,7 +52,13 @@ def start_update():
         print(f"\n🎉 Done! Files saved to: {output_dir}")
 
     threading.Thread(target=task).start()
-
+def confrim_overwite():
+    if messagebox.askyesno("Confirm Updating", "Updating the wrong version will overwrite existing files. Do you want to continue?"):
+        start_update()
+    else:
+        messagebox.showinfo("Overwrite Cancelled", "No files were overwritten.")
+        pass
+    
 def about():
     print(f"đã mở LunarMoonDLCT đẹp zai :))")
     messagebox.showinfo("About this app", "This app was created by LunarMoonDLCT.\nDiscord: https://discord.com/users/1182279772571717632")
@@ -91,7 +97,7 @@ loader_var = tkinter.StringVar(value="Choosen your modloader")
 loader_menu = ttk.Combobox(frame, textvariable=loader_var, values=["fabric", "forge", "quilt", "neoforge"], state="readonly")
 loader_menu.grid(row=2, column=1)
 
-ttk.Button(frame, text="Start Update", command=start_update).grid(row=3, column=0, columnspan=2, pady=5)
+ttk.Button(frame, text="Start Update", command=confrim_overwite).grid(row=3, column=0, columnspan=2, pady=5)
 ttk.Button(frame, text="Open Output Folder", command=open_output_folder).grid(row=3, column=2, padx=5)
 ttk.Button(frame, text="About App", command=about).grid(row=0, column=4)
 
