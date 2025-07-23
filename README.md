@@ -20,6 +20,7 @@ A simple tool that updates your Minecraft mods via Modrinth and CurseForge.
 ## 📦 How to build (for build to application file)
 1. Install pyinstaller
     ```bash
+    cd src
     pip install pyinstaller
     ```
 2. build code to app
