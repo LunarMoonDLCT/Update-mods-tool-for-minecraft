@@ -80,6 +80,11 @@ except AttributeError:
 root = tkinter.Tk()
 root.title("Minecraft Mod Updater")
 
+try:
+    root.iconbitmap(os.path.join(os.path.dirname(__file__), "icon.ico"))
+except Exception as e:
+    print(f"Warning: Could not load icon. {e}")
+
 frame = ttk.Frame(root)
 frame.pack(padx=10, pady=10)
 
