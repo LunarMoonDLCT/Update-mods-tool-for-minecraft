@@ -3,7 +3,7 @@ import zipfile
 import requests
 import os
 import tkinter as tk
-from modules.utils import sanitize_filename
+from ..utils import sanitize_filename
 
 
 try:
@@ -21,7 +21,7 @@ class ModUpdater:
     #--------------------------------------#
     # Mod Info Extraction
     #--------------------------------------#
-    def extract_mod_info(jar_path):
+    def extract_mod_info(self, jar_path):
         try:
             with zipfile.ZipFile(jar_path, 'r') as jar:
                 if 'fabric.mod.json' in jar.namelist():
@@ -70,7 +70,7 @@ class ModUpdater:
     #--------------------------------------#
     # CurseForge
     #--------------------------------------#
-    def search_curseforge(mod_name):
+    def search_curseforge(self, mod_name):
         url = f"https://api.curseforge.com/v1/mods/search?gameId=432&searchFilter={mod_name}&pageSize=1"
         headers = {"x-api-key": CURSEFORGE_API_KEY}
         res = requests.get(url, headers=headers)
@@ -78,7 +78,7 @@ class ModUpdater:
             return res.json()["data"][0]["id"]
         return None
 
-    def get_latest_curseforge(mod_id, mc_version, modloader):
+    def get_latest_curseforge(self, mod_id, mc_version, modloader):
         url = f"https://api.curseforge.com/v1/mods/{mod_id}/files"
         headers = {"x-api-key": CURSEFORGE_API_KEY}
         res = requests.get(url, headers=headers)
@@ -91,7 +91,7 @@ class ModUpdater:
     #--------------------------------------#
     # Mod Update
     #--------------------------------------#
-    def update_mod(self,filepath, mc_version, loader, output_dir, log):
+    def update_mod(self, filepath, mc_version, loader, output_dir, log):
         mod_id = self.extract_mod_info(filepath)
         if not mod_id:
             filename = os.path.splitext(os.path.basename(filepath))[0]
