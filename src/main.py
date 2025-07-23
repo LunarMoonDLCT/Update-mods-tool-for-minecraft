@@ -4,10 +4,12 @@
 import os
 import json
 import zipfile
-import tkinter as tk
+import tkinter
+from tkinter import ttk
 from tkinter import filedialog, messagebox, scrolledtext
 import requests
 import threading
+import sv_ttk
 import webbrowser
 from datetime import datetime
 
@@ -203,31 +205,33 @@ def confirm_exit():
 #--------------------------------------#
 # GUI Layout
 #--------------------------------------#
-root = tk.Tk()
+root = tkinter.Tk()
 root.title("Minecraft Mod Updater")
 
-frame = tk.Frame(root)
+frame = ttk.Frame(root)
 frame.pack(padx=10, pady=10)
 
-folder_entry = tk.Entry(frame, width=40)
+folder_entry = ttk.Entry(frame, width=40)
 folder_entry.grid(row=0, column=1)
-tk.Button(frame, text="Select Mod Folder", command=select_folder).grid(row=0, column=2)
+ttk.Button(frame, text="Select Mod Folder", command=select_folder).grid(row=0, column=2)
 
-tk.Label(frame, text="Minecraft Version:").grid(row=1, column=0)
-mc_entry = tk.Entry(frame)
+ttk.Label(frame, text="Minecraft Version:").grid(row=1, column=0)
+mc_entry = ttk.Entry(frame)
 mc_entry.grid(row=1, column=1)
 
-tk.Label(frame, text="Mod Loader:").grid(row=2, column=0)
-loader_var = tk.StringVar(value="Choosen your modloader")
-tk.OptionMenu(frame, loader_var, "fabric", "forge", "quilt", "neoforge").grid(row=2, column=1)
+ttk.Label(frame, text="Mod Loader:").grid(row=2, column=0)
+loader_var = tkinter.StringVar(value="Choosen your modloader")
+loader_menu = ttk.Combobox(frame, textvariable=loader_var, values=["fabric", "forge", "quilt", "neoforge"], state="readonly")
+loader_menu.grid(row=2, column=1)
 
-tk.Button(frame, text="Start Update", command=start_update).grid(row=3, column=0, columnspan=2, pady=5)
-tk.Button(frame, text="Open Output Folder", command=open_output_folder).grid(row=3, column=2, padx=5)
-tk.Button(frame, text="About App", command=about).grid(row=0, column=4)
+ttk.Button(frame, text="Start Update", command=start_update).grid(row=3, column=0, columnspan=2, pady=5)
+ttk.Button(frame, text="Open Output Folder", command=open_output_folder).grid(row=3, column=2, padx=5)
+ttk.Button(frame, text="About App", command=about).grid(row=0, column=4)
 
 log_box = scrolledtext.ScrolledText(root, width=100, height=25)
 log_box.pack(padx=10, pady=10)
 
-
 root.protocol("WM_DELETE_WINDOW", confirm_exit)
+
+sv_ttk.set_theme("dark")
 root.mainloop()
