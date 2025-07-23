@@ -46,14 +46,14 @@ class ModUpdater:
     #--------------------------------------#
     # Modrinth
     #--------------------------------------#
-    def search_modrinth(mod_id):
+    def search_modrinth(self, mod_id):
         url = f"https://api.modrinth.com/v2/search?query={mod_id}&limit=1"
         res = requests.get(url)
         if res.ok and res.json().get("hits"):
             return res.json()["hits"][0]["project_id"]
         return None
 
-    def get_latest_modrinth(project_id, mc_version, modloader):
+    def get_latest_modrinth(self, project_id, mc_version, modloader):
         url = f"https://api.modrinth.com/v2/project/{project_id}/version"
         res = requests.get(url)
         if res.ok:
