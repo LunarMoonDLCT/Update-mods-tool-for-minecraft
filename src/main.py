@@ -6,6 +6,7 @@ import threading
 import sv_ttk
 from modules.mod import ModUpdater
 from datetime import datetime
+from ctypes import windll
 
 md = ModUpdater()
 
@@ -66,6 +67,11 @@ def confirm_exit():
 #--------------------------------------#
 # GUI Layout
 #--------------------------------------#
+try:
+    windll.shcore.SetProcessDpiAwareness(1)
+except AttributeError:
+    pass
+
 root = tkinter.Tk()
 root.title("Minecraft Mod Updater")
 
