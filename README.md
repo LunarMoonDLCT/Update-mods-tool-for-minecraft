@@ -25,5 +25,6 @@ A simple tool that updates your Minecraft mods via Modrinth and CurseForge.
     ```
 2. build code to app
     ```bash
-    cd src
-    python -m pyinstaller --noconfirm --onefile --windowed --version-file=file_info.version --icon=icon.ico main.py
+      cd src
+      python -m PyInstaller --noconfirm --onefile --windowed --version-file=file_info.version --icon=icon.ico main.py
+    ```
