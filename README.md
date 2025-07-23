@@ -23,6 +23,10 @@ A simple tool that updates your Minecraft mods via Modrinth and CurseForge.
     cd src
     pip install pyinstaller
     ```
+3. install requirements
+  ```bash
+  pip install -r requirements.txt
+  ```
 2. build code to app
     ```bash
       cd src
