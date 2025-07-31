@@ -24,11 +24,11 @@ A simple tool that updates your Minecraft mods via Modrinth and CurseForge.
     pip install pyinstaller
     ```
 3. install requirements
-  ```bash
-  pip install -r requirements.txt
-  ```
+   ```bash
+   pip install -r requirements.txt
+   ```
 2. build code to app
     ```bash
       cd src
-      python -m PyInstaller --noconfirm --onefile --windowed --version-file=file_info.version --icon=icon.ico main.py
+      python -m PyInstaller --noconfirm --onefile --windowed --version-file=file_info.version --icon=icon.ico tool-update-mod-minecraft.py
     ```
