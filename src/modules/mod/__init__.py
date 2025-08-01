@@ -95,11 +95,11 @@ class ModUpdater:
         mod_id = self.extract_mod_info(filepath)
         if not mod_id:
             filename = os.path.splitext(os.path.basename(filepath))[0]
-            mod_id = filename.split("-")[0]  # Only take name before version part
-            log.insert(tk.END, f"[!] Could not read mod ID, using file name: {mod_id}\n")
+            mod_id = filename.split("-")[0]
+            log_print(log, f"[!] Could not read mod ID, using file name: {mod_id}")
             print(f"[!] Could not read mod ID, using file name: {mod_id}")
         else:
-            log.insert(tk.END, f"[*] Searching mod: {mod_id}\n")
+            log_print(log, f"[*] Searching mod: {mod_id}")
             print(f"[*] Searching mod: {mod_id}")
 
         project_id = self.search_modrinth(mod_id)
@@ -113,23 +113,15 @@ class ModUpdater:
                         save_path = os.path.join(output_dir, sanitize_filename(filename))
                         with open(save_path, 'wb') as f:
                             f.write(response.content)
-                        log.insert(tk.END, f"[✓] Downloaded from Modrinth: {filename}\n")
+                        log_print(log, f"[✓] Downloaded from Modrinth: {filename}")
                         print(f"[✓] Downloaded from Modrinth: {filename}")
-                        if os.path.exists(filepath):
-                            os.remove(filepath)
-                            log.insert(tk.END, f"[✓] Removed old mod: {filepath}\n")
-                            print(f"[*] Removed: {filepath}")
                         return
-                    else:
-                        log.insert(tk.END, f"[!] Failed to download from Modrinth: {filename}\n")
-                        print(f"[!] Failed to download from Modrinth: {filename}")
                 except Exception as e:
                     print(f"Error downloading from Modrinth: {e}")
-        else:
-            log.insert(tk.END, "[!] Mod not found on Modrinth\n")
-            print("[!] Mod not found on Modrinth")
+            log_print(log, "[!] No compatible version on Modrinth")
+            print("[!] No compatible version on Modrinth")
 
-        log.insert(tk.END, "[!] Trying CurseForge...\n")
+        log_print(log, "[!] Trying CurseForge...")
         print("[!] Trying CurseForge...")
         mod_cid = self.search_curseforge(mod_id)
         if mod_cid:
@@ -142,21 +134,10 @@ class ModUpdater:
                         save_path = os.path.join(output_dir, sanitize_filename(filename))
                         with open(save_path, 'wb') as f:
                             f.write(response.content)
-                        log.insert(tk.END, f"[✓] Downloaded from CurseForge: {filename}\n")
+                        log_print(log, f"[✓] Downloaded from CurseForge: {filename}")
                         print(f"[✓] Downloaded from CurseForge: {filename}")
-                        if os.path.exists(filepath):
-                            os.remove(filepath)
-                            log.insert(tk.END, f"[✓] Removed old mod: {filepath}\n")
-                            print(f"[*] Removed: {filepath}")
                         return
-                    else:
-                        log.insert(tk.END, f"[!] Failed to download from CurseForge: {filename}\n")
-                        print(f"[!] Failed to download from CurseForge: {filename}")
                 except Exception as e:
                     print(f"Error downloading from CurseForge: {e}")
-        else:
-            log.insert(tk.END, "[!] Mod not found on CurseForge\n")
-            print("[!] Mod not found on CurseForge")
-
-        log.insert(tk.END, f"[!] Could not update: {mod_id}\n")
+        log_print(log, f"[!] Could not update: {mod_id}")
         print(f"[!] Could not update: {mod_id}")
