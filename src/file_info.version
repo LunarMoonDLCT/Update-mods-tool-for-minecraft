@@ -16,13 +16,13 @@ VSVersionInfo(
         StringTable(
           '040904B0',
           [
-            StringStruct('CompanyName', 'LunarMoonDLCT'),
+            StringStruct('CompanyName', 'LunarMoonDLCT, CHIP'),
             StringStruct('FileDescription', 'Minecraft Mod Auto Updater'),
-            StringStruct('FileVersion', '1.0'),
+            StringStruct('FileVersion', '2.0'),
             StringStruct('InternalName', 'mod_updater_gui'),
             StringStruct('LegalCopyright', ''),
             StringStruct('ProductName', 'Mod Updater Tool'),
-            StringStruct('ProductVersion', '1.0')
+            StringStruct('ProductVersion', '2.0')
           ]
         )
       ]

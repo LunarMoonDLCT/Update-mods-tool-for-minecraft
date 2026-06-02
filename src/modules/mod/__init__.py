@@ -14,10 +14,15 @@ except ImportError:
 CURSEFORGE_API_KEY = "Dont-enter-API-KEY"
 
 class ModUpdater:
+    def _log(self, log_widget, message):
+        """Helper to print to log and console, and ensure GUI scrolls."""
+        log_widget.insert(tk.END, message + "\n")
+        log_widget.see(tk.END)
+        print(message)
+
     def __init__(self):
         self.latest_output_folder = [""]
         pass
-
     #--------------------------------------#
     # Mod Info Extraction
     #--------------------------------------#
@@ -42,7 +47,6 @@ class ModUpdater:
         except Exception as e:
             print(f"❌ Error reading mod jar: {e}")
         return None
-
     #--------------------------------------#
     # Modrinth
     #--------------------------------------#
@@ -64,8 +68,6 @@ class ModUpdater:
                         if f['filename'].endswith('.jar'):
                             return f['url'], f['filename']
             print(f"⚠️ No {modloader} version found on Modrinth.")
-        return None
-
 
     #--------------------------------------#
     # CurseForge
@@ -87,7 +89,6 @@ class ModUpdater:
                 if mc_version in file["gameVersions"] and modloader in file.get("modLoaders", []):
                     return file["downloadUrl"], file["fileName"]
         return None
-
     #--------------------------------------#
     # Mod Update
     #--------------------------------------#
@@ -104,16 +105,13 @@ class ModUpdater:
                             save_path = os.path.join(output_dir, sanitize_filename(filename))
                             with open(save_path, 'wb') as f:
                                 f.write(response.content)
-                            log.insert(tk.END, f"[✓] Downloaded from Modrinth: {filename}\n")
-                            print(f"[✓] Downloaded from Modrinth: {filename}")
-                            return True
+                            self._log(log, f"[✓] Downloaded from Modrinth: {filename}")
+                            return filename
                     except Exception as e:
                         print(f"Error downloading from Modrinth: {e}")
-                log.insert(tk.END, "[!] No compatible version on Modrinth\n")
-                print("[!] No compatible version on Modrinth")
+                self._log(log, "[!] No compatible version on Modrinth")
 
-            log.insert(tk.END, "[!] Trying CurseForge...\n")
-            print("[!] Trying CurseForge...")
+            self._log(log, "[!] Trying CurseForge...")
             mod_cid = self.search_curseforge(mod_id_guess)
             if mod_cid:
                 result = self.get_latest_curseforge(mod_cid, mc_version, loader)
@@ -125,26 +123,20 @@ class ModUpdater:
                             save_path = os.path.join(output_dir, sanitize_filename(filename))
                             with open(save_path, 'wb') as f:
                                 f.write(response.content)
-                            log.insert(tk.END, f"[✓] Downloaded from CurseForge: {filename}\n")
-                            print(f"[✓] Downloaded from CurseForge: {filename}")
-                            return True
+                            self._log(log, f"[✓] Downloaded from CurseForge: {filename}")
+                            return filename
                     except Exception as e:
                         print(f"Error downloading from CurseForge: {e}")
-            return False
+            return None
 
         mod_id = self.extract_mod_info(filepath)
         fallback_name = os.path.splitext(os.path.basename(filepath))[0].split("-")[0]
 
         if mod_id:
-            log.insert(tk.END, f"[*] Searching mod: {mod_id}\n")
-            print(f"[*] Searching mod: {mod_id}")
-            if try_download(mod_id):
-                return
+            self._log(log, f"[*] Searching mod: {mod_id}")
+            result = try_download(mod_id)
+            if result:
+                return result
 
-        log.insert(tk.END, f"[!] Search with file name: {fallback_name}\n")
-        print(f"[!] Fallback to filename search: {fallback_name}")
-        if try_download(fallback_name):
-            return
-
-        log.insert(tk.END, f"[!] Could not update: {mod_id or fallback_name}\n")
-        print(f"[!] Could not update: {mod_id or fallback_name}")
+        self._log(log, f"[!] Fallback to filename search: {fallback_name}")
+        return try_download(fallback_name)

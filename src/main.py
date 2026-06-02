@@ -5,6 +5,7 @@ from tkinter import filedialog, messagebox, scrolledtext
 import threading
 import sv_ttk
 from modules.mod import ModUpdater
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from ctypes import windll
 import base64
@@ -28,9 +29,6 @@ def create_temp_icon():
     icon_path.close()
     return icon_path.name
 
-#--------------------------------------#
-# Logging helper with auto-scroll
-#--------------------------------------#
 def log_print(text_widget, message):
     text_widget.insert(tkinter.END, message + "\n")
     text_widget.see(tkinter.END)
@@ -47,6 +45,13 @@ def select_folder():
 def open_output_folder():
     if os.path.exists(latest_output_folder[0]):
         os.startfile(latest_output_folder[0])
+
+def update_mod_worker(mod_file_path, mc_version, loader, output_dir, log_box):
+    """
+    Hàm bao bọc để xử lý việc cập nhật một mod.
+    Trả về tên tệp mới nếu thành công, None nếu thất bại.
+    """
+    return md.update_mod(mod_file_path, mc_version, loader, output_dir, log_box)
 
 def start_update():
     mods_folder = folder_entry.get()
@@ -65,16 +70,46 @@ def start_update():
     os.makedirs(output_dir, exist_ok=True)
     log_box.delete(1.0, tkinter.END)
 
+    start_button.config(state="disabled")
+    open_folder_button.config(state="disabled")
+
     def task():
-        for file in os.listdir(mods_folder):
-            if file.endswith(".jar"):
-                md.update_mod(os.path.join(mods_folder, file), mc_version, loader, output_dir, log_box)
-        log_print(log_box, f"\n🎉 Done! Files saved to: {output_dir}")
+        successful_mods = []
+        failed_mods = []
+        mod_files = [os.path.join(mods_folder, f) for f in os.listdir(mods_folder) if f.endswith(".jar")]
+
+        with ThreadPoolExecutor(max_workers=5) as executor:
+            future_to_mod = {executor.submit(update_mod_worker, mod_path, mc_version, loader, output_dir, log_box): os.path.basename(mod_path) for mod_path in mod_files}
+
+            for future in future_to_mod:
+                mod_name = future_to_mod[future]
+                try:
+                    result = future.result()
+                    if result:
+                        successful_mods.append(result)
+                    else:
+                        failed_mods.append(mod_name)
+                        log_print(log_box, f"[!] Could not update: {mod_name}")
+                except Exception as exc:
+                    log_print(log_box, f'Lỗi khi xử lý mod "{mod_name}": {exc}')
+                    failed_mods.append(mod_name)
+
+        log_print(log_box, f"\n🎉 Hoàn tất! Các tệp đã được lưu vào: {output_dir}")
+        if successful_mods:
+            successful_mods_str = "\n - ".join(successful_mods)
+            log_print(log_box, f"\n✅ Các mod đã được tải xuống thành công:\n - {successful_mods_str}")
+
+        if failed_mods:
+            failed_mods_str = "\n - ".join(failed_mods)
+            log_print(log_box, f"\n⚠️ Không thể cập nhật các mod sau (vui lòng thử tải thủ công):\n - {failed_mods_str}")
+
+        start_button.config(state="normal")
+        open_folder_button.config(state="normal")
 
     threading.Thread(target=task).start()
 
 def about():
-    messagebox.showinfo("About this app", "This app was created by LunarMoonDLCT.\nDiscord: https://discord.com/users/1182279772571717632")
+    messagebox.showinfo("About this app", "This app was created by LunarMoonDLCT and my friend CHIP.\nDiscord: https://discord.com/users/1182279772571717632")
 
 def confirm_exit():
     if messagebox.askokcancel("Exit Confirmation", "Do you really want to exit?"):
@@ -112,8 +147,10 @@ loader_var = tkinter.StringVar(value="Choosen your modloader")
 loader_menu = ttk.Combobox(frame, textvariable=loader_var, values=["fabric", "forge", "quilt", "neoforge"], state="readonly")
 loader_menu.grid(row=2, column=1)
 
-ttk.Button(frame, text="Start Update", command=start_update).grid(row=3, column=0, columnspan=2, pady=5)
-ttk.Button(frame, text="Open Output Folder", command=open_output_folder).grid(row=3, column=2, padx=5)
+start_button = ttk.Button(frame, text="Start Update", command=start_update)
+start_button.grid(row=3, column=0, columnspan=2, pady=5)
+open_folder_button = ttk.Button(frame, text="Open Output Folder", command=open_output_folder)
+open_folder_button.grid(row=3, column=2, padx=5)
 ttk.Button(frame, text="About App", command=about).grid(row=0, column=4)
 
 log_box = scrolledtext.ScrolledText(root, width=100, height=25)
